@@ -1,3 +1,4 @@
+import fastifyStatic from '@fastify/static'
 import fastify, { FastifyInstance } from 'fastify'
 import path from 'path'
 
@@ -7,10 +8,13 @@ import { AppConfig } from './types/appConfig'
 
 export const serverOf = () => {
   const server = fastify({ logger: true })
-  server.get('/ping', async (request, reply) => {
-    return reply.status(200).send({ message: 'pong!' })
+  server.get('/ping', async () => {
+    return { message: 'pong!' }
   })
-
+  server.register(fastifyStatic, {
+    root: path.resolve(__dirname, '../../frontend/dist'),
+    prefix: '/'
+  })
   server.register(MessageRouter)
   return server
 }

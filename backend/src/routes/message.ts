@@ -10,7 +10,7 @@ export const MessageRouter = (server: FastifyInstance, opts: RouteShorthandOptio
       return reply.status(200).send({ messages })
     } catch (error) {
       server.log.error(`Failed to get messages: ${error}`)
-      return reply.status(500).send({ error: (error as Error).message })
+      return reply.status(500).send({ error })
     }
   })
   server.post<{ Body: MessageBody }>('/api/v1/messages', async (request, reply) => {
@@ -20,7 +20,7 @@ export const MessageRouter = (server: FastifyInstance, opts: RouteShorthandOptio
       return reply.status(201).send({ message })
     } catch (error) {
       server.log.error(`Failed to add message: ${error}`)
-      return reply.status(500).send({ error: (error as Error).message })
+      return reply.status(500).send({ error })
     }
   })
   done()
