@@ -28,3 +28,26 @@ cp .env.sample .env
 ```bash
 npm run dev
 ```
+
+## Frontend
+
+### Install dependencies
+
+```bash
+cd frontend
+npm install
+```
+
+### Development mode
+
+```bash
+npm run dev
+```
+
+visit port `5173`
+
+### Production build
+
+```bash
+npm run build
+```
