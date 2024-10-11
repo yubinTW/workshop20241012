@@ -1,17 +1,27 @@
 import fastify, { FastifyInstance } from 'fastify'
+import path from 'path'
 
+import { connectToDb } from './plugins/mongoose'
+import { MessageRouter } from './routes/message'
 import { AppConfig } from './types/appConfig'
 
 export const serverOf = () => {
   const server = fastify({ logger: true })
   server.get('/ping', async (request, reply) => {
-    // TODO: practice modifying the response message
     return reply.status(200).send({ message: 'pong!' })
   })
+
+  server.register(MessageRouter)
   return server
 }
 
 export const serverStart = async (appConfig: AppConfig, server: FastifyInstance) => {
+  try {
+    await connectToDb(appConfig.mongodbConnectionString)
+  } catch (error) {
+    server.log.error(`Failed to connect to MongoDB: ${error}`)
+    process.exit(1)
+  }
 
   const listenConfig = {
     host: appConfig.host,
